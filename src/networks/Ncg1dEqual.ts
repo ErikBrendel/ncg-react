@@ -1,11 +1,11 @@
 import { NcgNode } from "./NcgTypes.ts";
 import NcgCostFunction from "./NcgCostFunction.tsx";
 
-function range(length: number): number[] {
+export function range(length: number): number[] {
   return new Array(length).fill(0).map((_, i) => i);
 }
 
-function sum(numbers: number[]): number {
+export function sum(numbers: number[]): number {
   return numbers.reduce((a, b) => a + b, 0);
 }
 
@@ -79,7 +79,7 @@ export default class Ncg1dEqualInstance {
   }
 
   /** given that we are currently valid, get the cost of the current state */
-  private getCost(cf: NcgCostFunction): number {
+  public getCost(cf: NcgCostFunction): number {
     return sum(range(this.nodes.length).map((i) => this.getCostForNode(cf, i)));
   }
 
