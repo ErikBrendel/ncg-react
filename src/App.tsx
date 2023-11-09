@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react";
 import { CombinedBaryInput } from "./components/CombinedBaryInput.tsx";
 import NcgDisplay from "./components/NcgDisplay.tsx";
-import Ncg1dEqualInstance, { sum } from "./networks/Ncg1dEqual.ts";
+import Ncg1dEqualInstance from "./networks/Ncg1dEqual.ts";
 import NcgCostFunction from "./networks/NcgCostFunction.tsx";
 import {
-  makeScalarColorizer,
+  makeDistinctRandomColorizer,
   slowlyCalculatingColorizer,
 } from "./colorizer/types.ts";
 
-let colorizer = makeScalarColorizer(7, 49, (a, b, c) => {
+const N = 7;
+let colorizer = makeDistinctRandomColorizer((a, b, c) => {
   const cf = new NcgCostFunction(a, b, c);
-  const inst = new Ncg1dEqualInstance(7);
+  const inst = new Ncg1dEqualInstance(N);
   inst.optimizeSimple(cf);
-  return sum(inst.nodes.map((n) => n.sendDistance));
+  return inst.nodes.map((n) => n.sendDistance).join(",");
 });
-const DELAY = 50;
+
+const DELAY = 100;
 colorizer = slowlyCalculatingColorizer(colorizer, DELAY);
 
 function App() {
@@ -34,7 +36,7 @@ function App() {
     return () => clearInterval(i);
   }, []);
 
-  const ncg = new Ncg1dEqualInstance(7);
+  const ncg = new Ncg1dEqualInstance(N);
   ncg.optimizeSimple(new NcgCostFunction(a, b, c));
 
   return (

@@ -43,6 +43,34 @@ export function makeScalarColorizer(
   };
 }
 
+function hashString(value: string): number {
+  let hash = 0;
+  if (value.length === 0) {
+    return hash;
+  }
+  for (let i = 0; i < value.length; i++) {
+    const char = value.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return hash;
+}
+
+export function makeDistinctRandomColorizer(
+  func: (a: number, b: number, c: number) => string,
+): BaryColorizer {
+  return {
+    getColorAt: (a: number, b: number, c: number) => {
+      const value = func(a, b, c);
+      const hash = hashString(value);
+      const r = (hash & 0xff0000) >> 16;
+      const g = (hash & 0x00ff00) >> 8;
+      const b_ = hash & 0x0000ff;
+      return `rgb(${r}, ${g}, ${b_})`;
+    },
+  };
+}
+
 export function cachedColorizer(colorizer: BaryColorizer): BaryColorizer {
   const cache = new BaryMap<string>();
   return {
@@ -59,7 +87,7 @@ export function cachedColorizer(colorizer: BaryColorizer): BaryColorizer {
 
 export function slowlyCalculatingColorizer(
   colorizer: BaryColorizer,
-  delay = 100,
+  delay: number,
 ): BaryColorizer {
   const cache = new BaryMap<string>();
   let lastCalculationTime = 0;
