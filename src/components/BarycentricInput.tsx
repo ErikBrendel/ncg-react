@@ -39,18 +39,6 @@ export default function BarycentricInput(props: Props) {
       X: x,
       Y: y,
     };
-    /*if (P.Y > TRIANGLE_HEIGHT) {
-      P.Y = TRIANGLE_HEIGHT;
-    }
-    if (P.Y < 0) {
-      P.Y = 0;
-    }
-    if (P.X > TRIANGLE_SIZE) {
-      P.X = TRIANGLE_SIZE;
-    }
-    if (P.X < 0) {
-      P.X = 0;
-    }*/
 
     const D = (B.Y - C.Y) * (A.X - C.X) + (C.X - B.X) * (A.Y - C.Y);
     let w_A = ((B.Y - C.Y) * (P.X - C.X) + (C.X - B.X) * (P.Y - C.Y)) / D;
@@ -89,7 +77,6 @@ export default function BarycentricInput(props: Props) {
       w_C = 0;
     }
 
-    console.log({ x, y, A, B, C, D, w_A, w_B, w_C });
     onChange(w_A, w_B, w_C);
   }
 
@@ -97,7 +84,6 @@ export default function BarycentricInput(props: Props) {
     const rect = ref.current!.getBoundingClientRect();
     const x = e.clientX - rect.left - PADDING;
     const y = e.clientY - rect.top - PADDING;
-    console.log(x, y);
     updateFromXY(x, y);
   };
 
@@ -110,6 +96,7 @@ export default function BarycentricInput(props: Props) {
         padding: PADDING,
         position: "relative",
         backgroundColor: "#ccc",
+        borderRadius: 10,
       }}
       onMouseDown={(e) => {
         setIsDragging(true);
