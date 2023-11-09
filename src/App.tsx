@@ -19,7 +19,16 @@ function App() {
   ncg.optimizeSimple(new NcgCostFunction(a, b, c));
 
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-evenly",
+      }}
+    >
       <NcgDisplay ncg={ncg} />
       <CombinedBaryInput a={a} b={b} c={c} onChange={onChange} />
     </div>
