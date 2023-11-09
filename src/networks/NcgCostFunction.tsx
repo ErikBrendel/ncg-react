@@ -1,19 +1,19 @@
 export default class NcgCostFunction {
   public constructor(
     public readonly sendWeight: number,
-    public readonly hopCountWeight: number,
-    public readonly totalConnectionLengthWeight: number,
+    public readonly avgHopCountWeight: number,
+    public readonly maxHopCountWeight: number,
   ) {}
 
   public getCost(
     sendStrength: number,
-    hopCount: number,
-    totalConnectionLength: number,
+    avgHopCount: number,
+    maxHopCount: number,
   ): number {
     return (
       this.sendWeight * sendStrength +
-      this.hopCountWeight * hopCount +
-      this.totalConnectionLengthWeight * totalConnectionLength
+      this.avgHopCountWeight * avgHopCount +
+      this.maxHopCountWeight * maxHopCount
     );
   }
 }

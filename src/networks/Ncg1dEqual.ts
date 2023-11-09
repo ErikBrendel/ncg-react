@@ -86,7 +86,7 @@ export default class Ncg1dEqualInstance {
   private getCostForNode(cf: NcgCostFunction, nodeIndex: number) {
     const sendDistance = this.nodes[nodeIndex].sendDistance;
     let totalHops = 0;
-    let totalDistance = 0;
+    let maxHopCount = 0;
     for (
       let otherNodeIndex = 0;
       otherNodeIndex < this.nodes.length;
@@ -96,12 +96,14 @@ export default class Ncg1dEqualInstance {
         continue;
       }
       const distances = this.findShortestPath(nodeIndex, otherNodeIndex, cf);
-      totalHops += distances.length;
-      totalDistance += sum(distances);
+      const hopCount = distances.length;
+      totalHops += hopCount;
+      if (hopCount > maxHopCount) {
+        maxHopCount = hopCount;
+      }
     }
     const averageHops = totalHops / (this.nodes.length - 1);
-    const averageDistance = totalDistance / (this.nodes.length - 1);
-    return cf.getCost(sendDistance, averageHops, averageDistance);
+    return cf.getCost(sendDistance, averageHops, maxHopCount);
   }
 
   private findShortestPath(
