@@ -31,6 +31,7 @@ export function CombinedBaryInput(props: {
         b={props.b}
         c={props.c}
         onChange={props.onChange}
+        colorizer={props.colorizer}
       />
     </div>
   );

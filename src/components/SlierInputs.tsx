@@ -1,10 +1,12 @@
 import SingleSliderInput from "./SingleSliderInput.tsx";
+import { BaryColorizer, makeBaryToLinear } from "../colorizer/types.ts";
 
 type Props = {
   onChange: (a: number, b: number, c: number) => void;
   a: number;
   b: number;
   c: number;
+  colorizer: BaryColorizer;
 };
 
 export function changeBaryValue(
@@ -30,7 +32,7 @@ export function changeBaryValue(
 }
 
 export default function SliderInputs(props: Props) {
-  const { a, b, c, onChange } = props;
+  const { a, b, c, onChange, colorizer } = props;
   return (
     <>
       <SingleSliderInput
@@ -39,6 +41,10 @@ export default function SliderInputs(props: Props) {
           const [newB, newC] = changeBaryValue(a, newA, b, c);
           onChange(newA, newB, newC);
         }}
+        colorizer={makeBaryToLinear(colorizer, (newA) => {
+          const [newB, newC] = changeBaryValue(a, newA, b, c);
+          return [newA, newB, newC];
+        })}
       />
       <SingleSliderInput
         value={b}
@@ -46,6 +52,10 @@ export default function SliderInputs(props: Props) {
           const [newA, newC] = changeBaryValue(b, newB, a, c);
           onChange(newA, newB, newC);
         }}
+        colorizer={makeBaryToLinear(colorizer, (newB) => {
+          const [newA, newC] = changeBaryValue(b, newB, a, c);
+          return [newA, newB, newC];
+        })}
       />
       <SingleSliderInput
         value={c}
@@ -53,6 +63,10 @@ export default function SliderInputs(props: Props) {
           const [newA, newB] = changeBaryValue(c, newC, a, b);
           onChange(newA, newB, newC);
         }}
+        colorizer={makeBaryToLinear(colorizer, (newC) => {
+          const [newA, newB] = changeBaryValue(c, newC, a, b);
+          return [newA, newB, newC];
+        })}
       />
     </>
   );

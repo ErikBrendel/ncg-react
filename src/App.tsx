@@ -14,7 +14,8 @@ let colorizer = makeScalarColorizer(7, 49, (a, b, c) => {
   inst.optimizeSimple(cf);
   return sum(inst.nodes.map((n) => n.sendDistance));
 });
-colorizer = slowlyCalculatingColorizer(colorizer, 50);
+const DELAY = 50;
+colorizer = slowlyCalculatingColorizer(colorizer, DELAY);
 
 function App() {
   const [a, setA] = useState(1 / 3);
@@ -29,7 +30,7 @@ function App() {
 
   const [_, setRefresh] = useState(0);
   useEffect(() => {
-    const i = setInterval(() => setRefresh((r) => r + 1), 50);
+    const i = setInterval(() => setRefresh((r) => r + 1), DELAY);
     return () => clearInterval(i);
   }, []);
 
